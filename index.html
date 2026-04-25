@@ -171,6 +171,50 @@
     filter: drop-shadow(0 0 2px rgba(0,0,0,0.35));
   }
 
+  ul.checklist { list-style: none; margin-left: 0; padding-left: 0; }
+  ul.checklist > li {
+    background: var(--brand-soft);
+    border-left: 4px solid var(--brand);
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+  }
+  ul.checklist > li > .check-q::before {
+    content: "✓ ";
+    color: var(--brand);
+    font-weight: 800;
+    margin-right: 4px;
+  }
+  ul.checklist > li > .check-q { font-weight: 600; }
+  ul.checklist ul { margin-top: 6px; margin-left: 24px; }
+
+  details {
+    margin-top: 10px;
+    border-radius: 6px;
+    border: 1px solid #f0d987;
+    background: #fffbe6;
+  }
+  details > summary {
+    cursor: pointer;
+    padding: 9px 14px;
+    background: #fff4cc;
+    border-radius: 6px;
+    font-weight: 600;
+    color: #6b4f00;
+    list-style: none;
+  }
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary::before {
+    content: "▸";
+    display: inline-block;
+    margin-right: 6px;
+    transition: transform 0.15s;
+  }
+  details[open] > summary::before { transform: rotate(90deg); }
+  details[open] > summary { border-radius: 6px 6px 0 0; }
+  details > .body { padding: 12px 16px 14px; }
+  details ol, details ul { margin-bottom: 0; }
+
   ol.steps { margin-left: 0; padding-left: 0; counter-reset: step; list-style: none; }
   ol.steps > li {
     counter-increment: step;
@@ -222,10 +266,10 @@
 <nav class="jump">
   <a href="#oversikt">Översikt</a>
   <a href="#konsol">Konsolen</a>
-  <a href="#setup">1. Setup</a>
-  <a href="#reset">2. Game reset</a>
-  <a href="#match-4">3. 4-manna</a>
-  <a href="#match-5">4. 5-manna</a>
+  <a href="#setup">1. Innan match</a>
+  <a href="#match-4">2. 4-manna</a>
+  <a href="#match-5">3. 5-manna</a>
+  <a href="#efter">4. Efter match</a>
   <a href="#problem">Problem?</a>
 </nav>
 
@@ -236,203 +280,340 @@
     <p>Den här lathunden tar dig steg för steg genom det sekretariatet behöver göra under en innebandymatch i Segeltorps hallar. Tavlan är en <strong>Nautronic NAUCON-1000</strong>.</p>
     <ol>
       <li><a href="#konsol">Konsolen — vilka knappar är vilka</a></li>
-      <li><a href="#setup">Setup före match — sport, periodtid, paustid</a></li>
-      <li><a href="#reset">Game reset — rensa föregående match</a></li>
-      <li><a href="#match-4">Under matchen — 4-manna (ingen utvisning/straff)</a></li>
-      <li><a href="#match-5">Under matchen — 5-manna (start/stopp, straff, utvisning)</a></li>
+      <li><a href="#setup">Innan matchen — fysisk förberedelse + checklista på tavlan</a></li>
+      <li><a href="#match-4">Under matchen — 4-manna (bara klockan)</a></li>
+      <li><a href="#match-5">Under matchen — 5-manna (poäng, utvisning, straff)</a></li>
+      <li><a href="#efter">Efter matchen — städa undan</a></li>
     </ol>
     <div class="callout info">
-      <strong>Innan första match för dagen:</strong> gör <em>alltid</em> både setup-kontrollen <em>och</em> en game reset, även om någon precis stängt av tavlan. Det tar 30 sekunder och sparar huvudvärk.
+      <strong>Är det här första gången du sitter sekretariat?</strong> Tre saker som hjälper:
+      <ol style="margin: 6px 0 0;">
+        <li><strong>Var där minst 30 minuter innan matchstart.</strong> Be en Segeltorps-ledare visa dig konsolen i lugn och ro — det tar 5 minuter och gör hela skillnaden.</li>
+        <li><strong>Det är alltid OK att stoppa klockan och fråga domaren.</strong> Domaren väntar hellre 20 sekunder än får felaktig tid på tavlan.</li>
+        <li><strong>När matchen är igång är det mesta du gör <span class="btn">START</span>, <span class="btn">STOP</span> och <span class="btn">+</span>.</strong> Resten är specialfall.</li>
+      </ol>
+    </div>
+    <div class="callout">
+      <strong>Två slags etiketter:</strong> de <em>fysiska</em> knapparna på konsolen är märkta på engelska (<span class="btn">SETUP</span>, <span class="btn">MENU</span>, <span class="btn">GAME RESET</span>, <span class="btn">START</span>, <span class="btn">STOP</span>, …). Det som visas på <em>pekskärmen</em> är på svenska (UTVISNING, TIME OUT, MÅL, ACCEPTERA ÄNDRING, …). Lathunden använder samma namn som du ser på apparaten.
     </div>
   </section>
 
   <section id="konsol">
     <h2>Konsolen — knappöversikt</h2>
-    <p>Det här är NAUCON-1000-handenheten. Etiketterna runt bilden visar vad varje fysisk knapp gör. Resten av lathunden refererar till de här namnen.</p>
+    <p>Konsolen är det du som sekretariat använder för att styra resultattavlan på väggen. All information — klocka, poäng, period, utvisningar — skickas <strong>trådlöst</strong> från konsolen till tavlan, så det du trycker här syns några sekunder senare på storbildstavlan.</p>
+    <p>De röda boxarna runt <span class="btn">START</span> och <span class="btn">STOP</span> i bilden nedan är där du kommer trycka mest under en match.</p>
     <figure class="console-fig">
-      <img src="images/konsol.png" alt="NAUCON-1000 konsol med etiketterade knappar">
-      <figcaption>Konsolens knappar (källa: Nautronic användarhandbok)</figcaption>
+      <img src="images/konsol-foto.png" alt="NAUCON-1000 konsol — fysiska knappar märkta på engelska">
+      <figcaption>NAUCON-1000-konsolen. <strong>H</strong> = hemmalag (blå knappar), <strong>G</strong> = gästlag (gula knappar).</figcaption>
     </figure>
-    <p>Det du främst kommer använda:</p>
+    <h3>Fysiska knappar du kommer använda</h3>
     <ul>
-      <li><span class="btn">Starta match</span> / <span class="btn">Stoppa match</span> — gröna och röda knappen längst ner till höger.</li>
-      <li><span class="btn">Lägg till poäng</span> / <span class="btn">Dra bort poäng</span> — för hemma respektive borta.</li>
-      <li><span class="btn">Match-återställning</span> — nollar matchen (game reset).</li>
-      <li><span class="btn">Konfiguration</span> — går in i sport-/inställningsmenyn.</li>
-      <li><span class="btn">Manuellt signalhorn</span> — om du behöver tuta manuellt.</li>
-      <li><span class="btn">Ange ändringar</span> / <span class="btn">Ångra ändringar</span> — bekräfta eller backa ett menyval.</li>
+      <li><span class="btn">START</span> / <span class="btn">STOP</span> — gröna och röda knappen längst ner till höger. Startar och stoppar matchklockan.</li>
+      <li><span class="btn">+</span> (blå, hemma) / <span class="btn">+</span> (gul, gäst) — lägger till poäng. <span class="btn">−</span> (uppe i hörnen) drar bort poäng om du registrerat fel. <em>Används bara på 5-manna — i 4-manna räknas inte poäng på tavlan.</em></li>
+      <li><span class="btn">GAME RESET</span> — nollar matchen.</li>
+      <li><span class="btn">SETUP</span> — öppnar inställningsmenyn (sport, periodtid, paustid…).</li>
+      <li><span class="btn">OK</span> — bekräftar val. <span class="btn">UNDO</span> — backar senaste valet.</li>
+      <li><span class="btn">TIME RESET</span> — nollar bara klockan (utan att röra poäng/period).</li>
     </ul>
+    <h3>Pekskärmen</h3>
+    <p>Stora skärmen i mitten är touch. Under match visar den knappar för <strong>TIME OUT</strong>, <strong>UTVISNING</strong>, <strong>SKOTT STATISTIK</strong> och <strong>MÅL</strong> för respektive lag, samt <strong>PERIOD</strong> och <strong>BYT MENY</strong> nere. I setup-menyn visar den inställningarna.</p>
   </section>
 
   <section id="setup">
-    <h2>1. Setup före match</h2>
-    <p>Gör det här <strong>innan</strong> matchen startar. Tar under en minut.</p>
+    <h2>1. Innan matchen</h2>
 
-    <ol class="steps">
-      <li>Slå på konsolen med <span class="btn">PÅ/AV</span> (om den inte redan är på).</li>
-      <li>Kontrollera att det står <strong>Innebandy</strong> uppe på tavlan / på konsolens display. Om det står en annan sport — tryck <span class="btn">Konfiguration</span> och välj <strong>Innebandy</strong> via pekskärmen eller med någon av de gula/blåa knapparna 1–4 högst upp.</li>
-      <li>Tryck <span class="btn">Konfiguration</span> en gång till för att öppna <em>Innebandyinställningar</em>. Här kontrollerar du två saker:
-        <ul>
-          <li><strong>Period time (Periodtid)</strong> — ska matcha det som står i spelschemat. För Segeltorp oftast:
-            <ul>
-              <li><strong>5-manna:</strong> 3 × 15:00</li>
-              <li><strong>4-manna:</strong> 2 × 20:00</li>
-            </ul>
-          </li>
-          <li><strong>Break time (Paustid)</strong> — ska vara <strong>3:00 minuter</strong>. Standardvärdet är 10:00, så det här behöver nästan alltid ändras.</li>
-        </ul>
+    <h3>Fysisk förberedelse</h3>
+    <ul class="checklist">
+      <li>
+        <span class="check-q">Hämta bord och stolar till sekretariatet.</span> Finns i förrådet. Ställs vid sargen på lämpligt ställe i hallen.
       </li>
-      <li>När båda värdena stämmer: backa ut ur menyn med <span class="btn">Ange ändringar</span> tills du är tillbaka i normal-läget och tavlan visar 0–0.</li>
-    </ol>
+      <li>
+        <span class="check-q">Hämta konsolen från kassaskåpet i förrådet.</span> Var kassaskåpet sitter varierar mellan hallar — fråga en Segeltorps-ledare om du inte vet.
+      </li>
+      <li>
+        <span class="check-q">Kolla batterinivån på konsolen.</span> Är den låg: hämta laddaren (ligger i samma kassaskåp) och plugga in vid sekretariatsbordet.
+      </li>
+      <li>
+        <span class="check-q">Lägg fram minst 3 extra-bollar.</span> De kastas in till domaren vid behov under matchen (när bollen försvinner ut, går sönder, osv.).
+      </li>
+      <li>
+        <span class="check-q">5-manna: ställ fram två utvisningsstolar.</span> En stol per lag, vid sargen nära sekretariatsbordet. (Hoppa över det här på 4-manna — inga utvisningar.)
+      </li>
+      <li>
+        <span class="check-q">5-manna: hämta inloggning till matchapp:en.</span> Parallellt med tavlan ska sekretariatet registrera mål, målskyttar, assist, straffar och period-/matchstart-stopp i en app. Be Segeltorps ledare om kod och adress innan matchen börjar — själva användningen av appen gås inte igenom här. (Hoppa över på 4-manna.)
+      </li>
+    </ul>
 
-    <figure class="console-fig" aria-label="Konfiguration-knappen markerad">
-      <img src="images/konsol.png" alt="Konsolens Konfiguration-knapp inringad">
-      <svg viewBox="0 0 1100 1100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-        <!-- Konfiguration-etikett (vänster, fjärde nedifrån) -->
-        <rect class="ring" x="6" y="394" width="160" height="40" rx="8"/>
-        <!-- Ange ändringar-etikett (botten höger om mitten) -->
-        <rect class="ring" x="395" y="755" width="220" height="40" rx="8"/>
-      </svg>
-      <figcaption>Använd <span class="btn">Konfiguration</span> för att gå in i menyn, <span class="btn">Ange ändringar</span> för att bekräfta varje val.</figcaption>
-    </figure>
+    <h3>Checklista på tavlan</h3>
+    <p>Gå igenom de fyra punkterna nedan i ordning. Är allt redan rätt? Bra — då är du klar. Om något inte stämmer: klicka på "<em>Så fixar du det</em>" under den punkten för stegvisa instruktioner.</p>
 
-    <div class="callout">
-      <strong>Tips:</strong> Ändrar du ett värde av misstag? Tryck <span class="btn">Ångra ändringar</span> innan du går vidare.
-    </div>
-  </section>
+    <ul class="checklist">
 
-  <section id="reset">
-    <h2>2. Game reset — har någon glömt nolla?</h2>
-    <p>Innan din match startar: <strong>kontrollera tavlan</strong>. Står det poäng från föregående match (t.ex. 4–3 eller en period-siffra som inte är 1)? Då är det bara att göra en game reset.</p>
+      <li>
+        <span class="check-q">Är konsolen på?</span> Pekskärmen ska lysa.
+        <details>
+          <summary>Så fixar du det</summary>
+          <div class="body">
+            <p>Tryck på power-knappen uppe till vänster på konsolen (den lilla blåa knappen med strömsymbol). Vänta några sekunder.</p>
+          </div>
+        </details>
+      </li>
 
-    <h3>Så här gör du game reset</h3>
-    <ol class="steps">
-      <li>Tryck på <span class="btn">Match-återställning</span> på vänster sida av konsolen.</li>
-      <li>Konsolen frågar om bekräftelse — tryck <span class="btn">Ange ändringar</span> för att bekräfta.</li>
-      <li>Tavlan visar nu 0–0, period 1, klocka i utgångsläge. Klart.</li>
-    </ol>
+      <li>
+        <span class="check-q">Står det INNEBANDY på pekskärmen?</span> (uppe till vänster på skärmen)
+        <details>
+          <summary>Så fixar du det — fel sport visas</summary>
+          <div class="body">
+            <ol>
+              <li>Tryck på <strong>BYT MENY</strong>-rutan på pekskärmen (en av de svarta rutorna nere på skärmen).</li>
+              <li>Välj <strong>INNEBANDY</strong> i listan.</li>
+            </ol>
+            <p>Det går också att trycka direkt på en av de blåa eller gula sifferknapparna 1–4 i listan av sporter.</p>
+          </div>
+        </details>
+      </li>
 
-    <figure class="console-fig" aria-label="Match-återställning-knappen markerad">
-      <img src="images/konsol.png" alt="Konsolens Match-återställning-knapp inringad">
-      <svg viewBox="0 0 1100 1100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-        <!-- Match-återställning-etikett (vänster, andra uppifrån) -->
-        <rect class="ring" x="6" y="298" width="160" height="55" rx="8"/>
-      </svg>
-      <figcaption><span class="btn">Match-återställning</span> nollar poäng, period och klocka.</figcaption>
-    </figure>
+      <li>
+        <span class="check-q">Är tavlan nollställd?</span> Poängen ska stå på 0–0, perioden på 1, och klockan visar antingen <strong>0:00</strong> eller <strong>periodtiden</strong> (t.ex. 15:00 eller 20:00) — beroende på om konsolen är inställd att räkna upp eller ned. Det viktiga är att inget hänger kvar från en föregående match.
+        <details>
+          <summary>Så fixar du det — gör en game reset</summary>
+          <div class="body">
+            <ol class="steps">
+              <li>Tryck på <span class="btn">GAME RESET</span> på vänster sida av konsolen.</li>
+              <li>Konsolen frågar om bekräftelse. Tryck <span class="btn">OK</span> (eller <strong>ACCEPTERA ÄNDRING</strong> på pekskärmen).</li>
+              <li>Pekskärmen ska nu visa 0–0, period 1, och klockan i utgångsläge (0:00 om tavlan räknar upp, periodtiden om den räknar ned).</li>
+            </ol>
 
-    <div class="callout warn">
-      <strong>OBS:</strong> Game reset (<span class="btn">Match-återställning</span>) är <em>inte</em> samma sak som "Total återställning". Total återställning raderar <strong>alla</strong> inställningar (periodtider osv.) och ska <strong>inte</strong> köras under en matchdag. Den kräver att man håller in flera knappar samtidigt vid uppstart, så du gör den inte av misstag.
-    </div>
+            <figure class="console-fig" aria-label="GAME RESET-knappen markerad">
+              <img src="images/konsol-foto.png" alt="Konsolens GAME RESET-knapp inringad">
+              <svg viewBox="0 0 1004 582" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                <rect class="ring" x="50" y="335" width="80" height="60" rx="10"/>
+              </svg>
+              <figcaption><span class="btn">GAME RESET</span> nollar poäng, period och klocka.</figcaption>
+            </figure>
+
+            <div class="callout warn">
+              <strong>Blanda inte ihop:</strong> <span class="btn">GAME RESET</span> är <em>inte</em> samma sak som "Total återställning". Total återställning raderar <em>alla</em> inställningar och ska aldrig köras under en matchdag. Du gör den inte av misstag — den kräver att man håller in flera knappar samtidigt vid uppstart.
+            </div>
+          </div>
+        </details>
+      </li>
+
+      <li>
+        <span class="check-q">Stämmer tiderna?</span> Tryck <span class="btn">SETUP</span> på konsolen — då öppnas <em>INNEBANDY SETUP</em> där du ser tiderna. De ska vara:
+        <ul>
+          <li><strong>PERIOD TID</strong> — <strong>15:00</strong> för 5-manna (3 × 15), <strong>20:00</strong> för 4-manna (2 × 20)</li>
+          <li><strong>PAUSE TID</strong> — <strong>5:00</strong> för 5-manna, <strong>3:00</strong> för 4-manna</li>
+          <li><strong>NEDTÄLLNING</strong> — <strong>0:00</strong> (ja, det stavas verkligen så på skärmen)</li>
+        </ul>
+
+        <figure class="console-fig" style="max-width: 480px;" aria-label="INNEBANDY SETUP-skärmen">
+          <img src="images/setup-skarm.png" alt="Pekskärm med PERIOD TID, PAUSE TID och NEDTÄLLNING markerade">
+          <figcaption>Så här ser INNEBANDY SETUP ut — de tre röda boxarna är värdena du kontrollerar.</figcaption>
+        </figure>
+
+        <details>
+          <summary>Så fixar du det — något stämmer inte</summary>
+          <div class="body">
+            <ol class="steps">
+              <li>Är du inte redan i SETUP — tryck <span class="btn">SETUP</span> på konsolen (se bild nedan).</li>
+              <li>Tryck på det värde du vill ändra på pekskärmen — t.ex. <strong>PERIOD TID</strong>.</li>
+              <li>Ett numeriskt tangentbord visas. Skriv in det rätta värdet (t.ex. 15:00).</li>
+              <li>Tryck <strong>ACCEPTERA ÄNDRING</strong> (gröna rutan nere på pekskärmen).</li>
+              <li>Upprepa för andra värden om de också är fel.</li>
+              <li>När alla stämmer: tryck <strong>ACCEPTERA ÄNDRING</strong> en sista gång för att gå tillbaka till match­läget.</li>
+            </ol>
+
+            <figure class="console-fig" aria-label="SETUP-knappen markerad">
+              <img src="images/konsol-foto.png" alt="Konsolens SETUP-knapp inringad">
+              <svg viewBox="0 0 1004 582" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                <rect class="ring" x="150" y="455" width="62" height="50" rx="10"/>
+              </svg>
+              <figcaption>Ett tryck på <span class="btn">SETUP</span> öppnar INNEBANDY SETUP.</figcaption>
+            </figure>
+
+            <div class="callout warn">
+              <strong>Viktigt:</strong> ändra <strong>PERIOD TID</strong> till <em>vänster</em> — inte <strong>INSTÄLLNING PERIOD TID</strong> till höger. Den högra ändrar bara <em>standardvärdet</em>, inte den faktiska periodtiden för matchen som ska spelas nu.
+            </div>
+
+            <div class="callout">
+              <strong>Tryckte du på fel värde?</strong> Tryck <strong>AVBOKA ÄNDRING</strong> (röda rutan nere till vänster på pekskärmen) eller <span class="btn">UNDO</span> på konsolen.
+            </div>
+          </div>
+        </details>
+
+        <p style="margin-top: 10px;"><strong>När alla tre värden stämmer:</strong> tryck <strong>ACCEPTERA ÄNDRING</strong> (gröna rutan nere på pekskärmen) för att stänga setup.</p>
+      </li>
+
+    </ul>
 
     <div class="callout info">
-      <strong>Efter game reset:</strong> dubbelkolla att periodtid och paustid fortfarande stämmer (ibland behövs en ny <a href="#setup">setup</a>).
+      <strong>När alla fyra punkter är gröna är du redo.</strong> Matchklockan startar när domaren blåser igång — då trycker du <span class="btn">START</span> (gröna knappen).
     </div>
   </section>
 
   <section id="match-4">
-    <h2>3. Under matchen — 4-manna</h2>
-    <p>På 4-manna används tavlan <strong>bara för matchklockan</strong>. Poäng räknas <em>inte</em> på tavlan — och inga utvisningar, straffar eller time-outs.</p>
+    <h2>2. Under matchen — 4-manna</h2>
+    <p>På 4-manna används tavlan <strong>bara för matchklockan</strong>. Poäng <strong>får inte visas</strong> på tavlan på Blå nivå (10–12 år) — det är en regel från Svenska Innebandyförbundet. Inga utvisningar, straffar eller time-outs heller.</p>
 
     <h3>Det här är allt du gör under matchen:</h3>
     <ol class="steps">
-      <li><strong>Periodstart:</strong> tryck <span class="btn">Starta match</span> (gröna knappen) när domaren blåser igång.</li>
-      <li><strong>Vid avblåsning där tiden ska stoppas</strong> (om domaren begär): tryck <span class="btn">Stoppa match</span> (röda knappen). Tryck <span class="btn">Starta match</span> igen när det börjar.</li>
-      <li><strong>Vid periodslut:</strong> signalhornet ljuder automatiskt. Pausen räknas ner och nästa period startar när du trycker <span class="btn">Starta match</span> igen.</li>
+      <li><strong>Periodstart:</strong> tryck <span class="btn">START</span> (gröna knappen) när domaren blåser igång.</li>
+      <li><strong>Vid mål:</strong> tryck <span class="btn">STOP</span>. Klockan ska alltid stoppas vid mål (även på 4-manna). Tryck <span class="btn">START</span> igen när domaren blåser igång.</li>
+      <li><strong>Vid annan avblåsning där tiden ska stoppas</strong> — t.ex. om någon klivit på bollen, en spelare blivit skadad, eller domaren signalerar tidsstopp: tryck <span class="btn">STOP</span>. Tryck <span class="btn">START</span> igen när domaren blåser igång spelet.</li>
+      <li><strong>Vid periodslut:</strong> signalhornet ljuder automatiskt. Tryck sedan <span class="btn">START</span> för att starta pausens nedräkning (den börjar inte räkna ner av sig själv). När pausen är slut tutar tavlan igen — tryck <span class="btn">START</span> en gång till när domaren blåser igång nästa period.</li>
     </ol>
 
-    <figure class="console-fig" aria-label="Start- och stopp-knapparna markerade">
-      <img src="images/konsol.png" alt="Start match och Stoppa match inringade">
-      <svg viewBox="0 0 1100 1100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-        <!-- Stoppa match-etikett (höger) -->
-        <rect class="ring" x="930" y="372" width="155" height="40" rx="8"/>
-        <!-- Starta match-etikett (höger) -->
-        <rect class="ring" x="930" y="425" width="155" height="40" rx="8"/>
-      </svg>
-      <figcaption>Bara två knappar du faktiskt behöver under en 4-manna-match.</figcaption>
-    </figure>
+    <p>De röda boxarna runt <span class="btn">START</span> och <span class="btn">STOP</span> i konsolbilden överst på sidan visar var de sitter.</p>
+
+    <div class="callout">
+      <strong>Räkna mål på papper eller i mobilen.</strong> Eftersom tavlan inte visar poängen är det sekretariatets jobb att hålla koll på antal mål — skriv ner allt eftersom. Efter slutsignal: rapportera resultatet till <strong>Segeltorps ledare</strong> (alltså bara hemmalagets ledare, inte motståndarens).
+    </div>
 
     <div class="callout info">
-      <strong>Det är allt.</strong> Inga poäng, inga utvisningar, inga straffar, inga time-outs på 4-manna.
+      <strong>Det är allt på tavlan.</strong> Inga utvisningar, inga straffar, inga time-outs på 4-manna.
     </div>
   </section>
 
   <section id="match-5">
-    <h2>4. Under matchen — 5-manna</h2>
-    <p>5-manna använder samma start/stopp och poäng som 4-manna, plus <strong>utvisningar</strong> och <strong>straffar</strong>.</p>
+    <h2>3. Under matchen — 5-manna</h2>
+    <p>5-manna använder <span class="btn">START</span> / <span class="btn">STOP</span> precis som 4-manna, plus <strong>poäng</strong>, <strong>utvisningar</strong> och <strong>straff</strong>.</p>
 
-    <h3>Huvudflödet (samma som 4-manna)</h3>
+    <div class="callout info">
+      <strong>Segeltorp = hemma = blå knappar.</strong> I Segeltorps hemmamatcher är vi alltid hemmalaget. Använd alltid de <em>blå</em> knapparna (vänster H-sida på konsolen) för Segeltorps mål och utvisningar, och de <em>gula</em> knapparna (höger G-sida) för motståndarna.
+    </div>
+
+    <div class="callout">
+      <strong>Parallellt med tavlan: appen.</strong> På 5-manna ska sekretariatet också registrera matchhändelser i en app — mål, målskyttar, assist, straffar, samt period- och matchstart/slut. Koder och adresser för appen får du av Segeltorps ledare. Hur appen används gås inte igenom i den här lathunden.
+    </div>
+
+    <div class="callout info">
+      <strong>Kom ihåg <abbr title="Mål, Utvisning, Straff, Time-out">MUST</abbr>!</strong> Det är de fyra tillfällena då du ska stoppa klockan:
+      <ul style="margin-top: 6px; margin-bottom: 0;">
+        <li><strong>M</strong>ål</li>
+        <li><strong>U</strong>tvisning</li>
+        <li><strong>S</strong>traff</li>
+        <li><strong>T</strong>ime-out</li>
+      </ul>
+      Plus förstås om domaren signalerar tidsstopp av annan anledning (skadad spelare osv.). Men minns du <strong>MUST</strong> så har du täckt nästan allt.
+    </div>
+
+    <h3>Huvudflödet</h3>
     <ol class="steps">
-      <li><strong>Periodstart:</strong> <span class="btn">Starta match</span>.</li>
-      <li><strong>Vid mål:</strong> <span class="btn">Lägg till poäng för hemmalaget</span> / <span class="btn">…för bortalaget</span>.</li>
-      <li><strong>Vid avblåsning där tiden ska stoppas:</strong> <span class="btn">Stoppa match</span>. Starta igen med <span class="btn">Starta match</span>.</li>
-      <li><strong>Vid periodslut:</strong> signalhornet ljuder automatiskt. Pausen räknas ner och nästa period startar när du trycker <span class="btn">Starta match</span>.</li>
+      <li><strong>Periodstart:</strong> <span class="btn">START</span>.</li>
+      <li><strong>Vid mål:</strong> tryck <span class="btn">STOP</span> direkt. Vänta sedan tills domaren blåser igång spelet igen (efter tekning på mittpunkten) — <em>då</em> registrerar du målet med <span class="btn">+</span> (blå för hemma, gul för gäst — knapparna sitter på nedre raden mellan SETUP och OK) och trycker <span class="btn">START</span>. Att vänta gör att tavlan inte räknar upp poäng innan spelet faktiskt återupptas. Du kan också trycka på <strong>MÅL</strong>-rutan på pekskärmen för rätt lag.</li>
+      <li><strong>Vid avblåsning där tiden ska stoppas:</strong> <span class="btn">STOP</span>. Starta igen med <span class="btn">START</span>.</li>
+      <li><strong>Vid periodslut:</strong> signalhornet ljuder automatiskt. Tryck sedan <span class="btn">START</span> för att starta pausens nedräkning (den börjar inte räkna ner av sig själv). När pausen är slut tutar tavlan igen — tryck <span class="btn">START</span> en gång till när domaren blåser igång nästa period.</li>
+      <li><strong>Felregistrerat mål?</strong> Tryck <span class="btn">−</span> (uppe i hörnen — blå för hemma, gul för gäst).</li>
     </ol>
+
+    <figure class="console-fig">
+      <img src="images/konsol-foto.png" alt="NAUCON-1000 konsol">
+      <figcaption>Stora <span class="btn">+</span> nere på mitten = mål (blå för hemma H, gul för gäst G). <span class="btn">−</span> uppe i hörnen = ta bort fel mål.</figcaption>
+    </figure>
+
+    <div class="callout warn">
+      <strong>Effektiv tid — sista 3 minuterna (gäller seriespel).</strong> Resten av matchen rullar klockan på och stoppas <em>bara</em> vid MUST. Men i seriespel (3×15 eller 3×20) gäller <strong>effektiv tid</strong> de sista tre minuterna av sista perioden: då ska klockan stoppas vid <em>varje</em> avblåsning från domaren, inte bara vid MUST. Tryck <span class="btn">STOP</span> så fort domaren blåser, oavsett anledning, och <span class="btn">START</span> igen när spelet sätts igång. (<a href="https://www.innebandy.se/stockholm/tavling/regler-och-direktiv/matchtider" target="_blank" rel="noopener">officiella matchtidsregler</a>)
+      <p style="margin: 8px 0 0;"><strong>Cuper är annorlunda.</strong> Varje cup har egna tävlingsbestämmelser — typiskt 2×15 minuter med rullande tid hela vägen och ingen effektiv tid. Innan matchstart: fråga någon Segeltorps-ansvarig om <strong>matchtid</strong>, <strong>paustid</strong> och om <strong>effektiv tid</strong> gäller. Time-outs och utvisningar gäller alltid i 5-manna-cuper.</p>
+    </div>
 
     <h3>Utvisning</h3>
     <p>När domaren visar utvisning (typiskt 2 minuter):</p>
     <ol class="steps">
-      <li>Tryck <span class="btn">Stoppa match</span> så fort domaren blåser av.</li>
-      <li>Tryck <span class="btn">Välj funktion</span> (knappen i mitten på nedre raden) och välj <strong>Penalty</strong> för det lag som ska utvisas. På pekskärmen kan du också trycka direkt på lagets <em>Penalty</em>-ruta.</li>
-      <li>Skriv in spelarens nummer på det numeriska tangentbordet och bekräfta.</li>
-      <li>Välj typ av utvisning:
+      <li>Tryck <span class="btn">STOP</span> så fort domaren blåser av.</li>
+      <li>Tryck på <strong>UTVISNING</strong>-rutan på pekskärmen — på <em>hemmalagets</em> sida (vänster) om hemmalaget ska utvisas, <em>gästlagets</em> sida (höger) annars.</li>
+      <li>Ett numeriskt tangentbord visas — skriv in spelarens nummer och bekräfta.</li>
+      <li>Välj typ av utvisning på pekskärmen — nästan alltid <strong>2</strong>:
         <ul>
-          <li><strong>2</strong> — vanlig 2-minutersutvisning</li>
-          <li><strong>5</strong> — 5-minutersutvisning</li>
-          <li><strong>Misconduct 10</strong> — 10 min för osportsligt uppträdande</li>
-          <li><strong>2+2</strong>, <strong>5+2</strong>, <strong>2+10</strong> — kombinationer (om domaren signalerar två förseelser)</li>
+          <li><strong>2</strong> — vanlig 2-minutersutvisning (det här är 9 av 10 fall)</li>
+          <li><strong>5</strong> — 5-minutersutvisning (ovanligt — vid grövre förseelser)</li>
+          <li><strong>10</strong> — 10 min personligt straff (osportsligt uppträdande)</li>
+          <li><strong>2+2</strong>, <strong>5+2</strong>, <strong>2+10</strong> — kombinationer om domaren signalerar två förseelser samtidigt på samma spelare. Är du osäker — fråga domaren.</li>
         </ul>
       </li>
-      <li>Bekräfta med <span class="btn">Ange ändringar</span>. Tavlan visar nu utvisningstiden bredvid lagets poäng och räknar ner när matchen är igång.</li>
-      <li>Tryck <span class="btn">Starta match</span> när domaren blåser igång igen.</li>
+      <li>Bekräfta med <strong>ACCEPTERA ÄNDRING</strong> på pekskärmen (eller <span class="btn">OK</span> på konsolen). Pekskärmen visar nu utvisningstiden bredvid lagets poäng och räknar ner när matchen är igång.</li>
+      <li>Tryck <span class="btn">START</span> när domaren blåser igång igen.</li>
     </ol>
 
     <div class="callout">
-      <strong>Vid mål under utvisning:</strong> en 2-minutare löper ut automatiskt om motståndaren gör mål. Tavlan sköter det själv — du behöver inte ta bort utvisningen manuellt.
+      <strong>Vid mål under utvisning:</strong> en <strong>2-minutersutvisning</strong> bryts automatiskt om motståndaren gör mål — tavlan tar bort den själv. <strong>Men:</strong> 5-minutare och 10-minutare bryts <em>inte</em> vid mål — de fortsätter att räknas ner. Om laget har två 2:or rullande och släpper in mål bryts bara den äldsta. Är du osäker på om utvisningen ska tas bort: fråga domaren.
     </div>
 
-    <h3>Straff (penalty shot)</h3>
+    <details>
+      <summary>Två utvisningar samtidigt på samma lag (ovanligt)</summary>
+      <div class="body">
+        <p>Ibland blir två spelare i samma lag utvisade i nära följd. Då gäller:</p>
+        <ul>
+          <li>Båda utvisningarna räknas <strong>parallellt</strong> — laget spelar 3 utespelare mot 5 så länge båda löper.</li>
+          <li>Lägg in dem i den ordning domaren ger dem — den först givna utvisningen ska in <em>först</em> på pekskärmen.</li>
+          <li>Om laget släpper in mål bryts bara den <em>äldsta</em> 2:an (den först inlagda). Den andra fortsätter rulla. Tavlan sköter detta automatiskt — förutsatt att de lagts in i rätt ordning.</li>
+        </ul>
+        <p>Är du osäker på ordningen — fråga domaren innan du registrerar.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Matchstraff (MP1, MP2, MP3) — händer sällan</summary>
+      <div class="body">
+        <p>Matchstraff är det grövsta domaren kan utdöma. Spelaren lämnar planen för resten av matchen och får inte spela. Sekretariatet behöver registrera ett <strong>lagstraff</strong> på tavlan så laget spelar med en spelare mindre i 5 minuter — sedan kan en annan spelare ersätta den utvisade på planen.</p>
+        <ul>
+          <li><strong>MP1</strong> — 5 minuter lagstraff. Spelaren lämnar matchen.</li>
+          <li><strong>MP2</strong> — 5 minuter lagstraff. Spelaren lämnar matchen <em>och</em> nästa match (rapporteras vidare).</li>
+          <li><strong>MP3</strong> — 5 minuter lagstraff. Spelaren lämnar matchen plus minst en match till — beslutas av disciplinnämnd.</li>
+        </ul>
+        <p>På tavlan: registrera som en vanlig <strong>5</strong>-minutersutvisning på spelarens nummer (UTVISNING → nummer → <strong>5</strong>). <strong>Notera vilken typ av matchstraff (MP1/2/3) det var i appen och på protokollet</strong> — det är där skillnaden mellan dem hanteras, inte på tavlan.</p>
+        <div class="callout">
+          Det här är så ovanligt att om det händer — fråga domaren steg för steg vad du ska göra. Det gör inget om matchen pausas en minut för att få det rätt.
+        </div>
+      </div>
+    </details>
+
+    <h3>Straff</h3>
     <p>När domaren tilldömer en straff:</p>
     <ol class="steps">
-      <li>Tryck <span class="btn">Stoppa match</span>.</li>
+      <li>Tryck <span class="btn">STOP</span>.</li>
       <li>Klockan står still under straffläggningen — du gör inget mer på tavlan medan straffen läggs.</li>
-      <li>Vid mål: tryck <span class="btn">Lägg till poäng</span> för rätt lag.</li>
+      <li>Vid mål: tryck <span class="btn">+</span> för rätt lag (blå för hemma, gul för gäst).</li>
       <li>Vid räddning eller miss: ingen poängändring.</li>
-      <li>Tryck <span class="btn">Starta match</span> när domaren blåser igång spelet igen.</li>
+      <li>Tryck <span class="btn">START</span> när domaren blåser igång spelet igen.</li>
     </ol>
 
     <h3>Time-out</h3>
-    <p>Om ett lag begär time-out:</p>
+    <p>Varje lag har <strong>rätt till en (1) time-out per match</strong> — inte per period. När den är förbrukad får laget inte begära en till. Om ett lag begär time-out:</p>
     <ol class="steps">
-      <li>Tryck <span class="btn">Stoppa match</span>.</li>
-      <li>Välj <strong>Time-out</strong> för rätt lag (via <span class="btn">Välj funktion</span> eller pekskärmen).</li>
-      <li>Tavlan räknar ner 30 sekunder automatiskt och tutar när det är slut.</li>
-      <li>Tryck <span class="btn">Starta match</span> när spelet återupptas.</li>
+      <li>Tryck <span class="btn">STOP</span> så fort domaren beviljar time-outen.</li>
+      <li>Tryck på <strong>TIME OUT</strong>-rutan på pekskärmen för rätt lag (vänster sida = hemma, höger = gäst).</li>
+      <li>Vänta. Domaren blåser i pipan när time-outen ska börja räknas — <em>då</em> trycker du <span class="btn">START</span>, och 30-sekundersnedräkningen drar igång.</li>
+      <li>När de 30 sekunderna är slut tutar tavlan automatiskt. Domaren blåser igång spelet — tryck <span class="btn">START</span> igen för att starta matchklockan.</li>
     </ol>
 
-    <h3>Manuellt signalhorn</h3>
-    <p>Om du behöver tuta manuellt (t.ex. vid begärd time-out som tavlan inte fattar): tryck <span class="btn">Manuellt signalhorn</span> uppe till höger på konsolen.</p>
-
-    <figure class="console-fig" aria-label="Manuellt signalhorn-knappen markerad">
-      <img src="images/konsol.png" alt="Manuellt signalhorn-knappen inringad">
-      <svg viewBox="0 0 1100 1100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-        <rect class="ring" x="930" y="240" width="155" height="55" rx="8"/>
-      </svg>
-      <figcaption><span class="btn">Manuellt signalhorn</span> tutar så länge du håller den intryckt.</figcaption>
-    </figure>
-
     <div class="callout warn">
-      <strong>Felregistrerat?</strong> Använd <strong>Correct-menyn</strong> (<em>Korrigera</em>) för att ta bort en felaktig utvisning eller foul. Du når den via <span class="btn">Välj funktion</span> → <em>Correct</em>. Stoppa matchen först.
+      <strong>Felregistrerat?</strong> Tryck <span class="btn">STOP</span> och vinka in en domare — de hjälper dig rätta utvisningen eller poängen. Försök inte fixa det själv mitt under match.
     </div>
+  </section>
+
+  <section id="efter">
+    <h2>4. Efter matchen</h2>
+    <ul class="checklist">
+      <li>
+        <span class="check-q">Tryck <span class="btn">GAME RESET</span>.</span> Gör alltid en game reset efter slutsignal — även om det kommer en ny match direkt efteråt — så att nästa sekretariat startar med blank tavla. (Tryck <span class="btn">OK</span> för att bekräfta.)
+      </li>
+      <li>
+        <span class="check-q">Är det en ny match direkt efter?</span> Då låter du resten stå (bord, stolar, konsol) — nästa sekretariat tar över.
+      </li>
+      <li>
+        <span class="check-q">Annars: städa undan.</span> Ställ tillbaka bord och stolar. Plocka in utvisningsstolarna (om 5-manna). Lägg konsolen i kassaskåpet (med laddaren om du använt den).
+      </li>
+    </ul>
   </section>
 
   <section id="problem">
     <h2>Vid problem</h2>
+    <p><strong>Fråga domarna.</strong> De är rutinerade och vet vad som behöver göras. Tryck <span class="btn">STOP</span> först om matchen är igång — det är aldrig fel.</p>
+    <h3>Vanliga situationer</h3>
     <ul>
-      <li><strong>Tavlan svarar inte:</strong> kontrollera att konsolen är på (display lyser). Försök <span class="btn">PÅ/AV</span> en gång.</li>
-      <li><strong>Fel sport visas:</strong> gör om <a href="#setup">setup</a>.</li>
-      <li><strong>Periodtid eller paustid stämmer inte:</strong> gå in i <span class="btn">Konfiguration</span> mellan perioderna och justera. Det är OK att ändra under pågående paus.</li>
-      <li><strong>Helt vilse:</strong> kolla chatten eller fråga matchvärden. Gör <em>inte</em> "Total återställning" — det rensar alla inställningar.</li>
+      <li><strong>Slutsignalen tutade inte vid periodslut:</strong> det händer ibland. Säg till domaren — de avslutar perioden ändå när de märker att tiden tagit slut.</li>
+      <li><strong>Helt vilse?</strong> Tryck <span class="btn">STOP</span> och vinka in domaren. Det är aldrig pinsamt — de stannar hellre matchen 30 sekunder än får felaktig tid.</li>
     </ul>
   </section>
 
